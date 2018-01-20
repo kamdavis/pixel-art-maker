@@ -4,12 +4,13 @@
 var heightInput = $('.height');
 var widthInput = $('.width');
 var button = $('.button');
-var color = $('.color-picker');
+//var color = $('.color-picker');
 var canvas = $('#pixel_canvas');
 
 // When size is submitted by the user, call makeGrid()
 
 function makeGrid(){
+  clearGrid();
   var m = $('.height').val();
   console.log(m);
   var n = $('.width').val();
@@ -22,7 +23,6 @@ function makeGrid(){
     $('tr').append('<td>');
     console.log('madeit');
   }
-  widthInput.css('background-color', 'rgb(230, 31, 162)');
 }
 
 function clearGrid(){
@@ -32,11 +32,37 @@ function clearGrid(){
 $(document).ready(function() {
   $('#sizePicker').submit(function(doIt) {
     doIt.preventDefault();
-    clearGrid();
     button.unbind().click(makeGrid);
-  });
-});
 
-canvas.hover(function backgroundHover() {
-  canvas.css('background-color', '#f5f5f5,');
+    $('#pixel_canvas td').bind("mouseover", function(change){
+      var column_num = parseInt($(this).index()) + 1;
+      var row_num = parseInt($(this).parent().index()) + 1;
+      var cell_num = (((row_num - 1) * widthInput.val()) + column_num - 1);
+      var all = $('td');
+      var cell = $(all[cell_num]);
+      var color = $('.color-picker').val();
+
+      var original_color = cell.css('background-color');
+
+      cell.css('background-color', color);
+
+      $('#pixel_canvas td').click(function(change){
+        var column_num = parseInt($(this).index()) + 1;
+        var row_num = parseInt($(this).parent().index()) + 1;
+        var cell_num = (((row_num - 1) * widthInput.val()) + column_num - 1);
+        var all = $('td');
+        var cell = $(all[cell_num]);
+        color = $('.color-picker').val();
+
+        cell.css('background-color', color);
+        original_color = color;
+      });
+
+      cell.bind("mouseout", function(){
+        cell.css('background-color', original_color);
+      })
+
+    });
+
+  });
 });

@@ -20,6 +20,7 @@ table,
 tr,
 td {
     border: 1px solid black;
+    margin-bottom: 20px;
 }
 
 table {
@@ -33,6 +34,7 @@ tr {
 
 td {
     width: 20px;
+    background-color: white;
 }
 
 input[type=number] {
